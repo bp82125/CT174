@@ -161,8 +161,6 @@ int main() {
 
 	in_ma_tran(G);
 
-	
-	
 	totalValue = 0.0;
 	best_dist = FLT_MAX;
 	lowerBound = 0.0;

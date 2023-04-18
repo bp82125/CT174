@@ -83,45 +83,44 @@ void BubbleSort(ItemList *it){
 	}	
 }
 
-float upperBound;
-float totalValue;
-float totalWeight;
-float bestValue;
-int current[MAXN];
+float upperBound; // can tren
+float totalValue; // tong gia tri hien tai
+float totalWeight; // trong luong con lai cua ba lo
+float bestValue; // gia lon nhat tam thoi
+int current[MAXN]; // mang luu tru phuong an tam thoi
 
 #define min(a,b) (a < b) ? a : b
 
-void createRootNode(ItemList it, int capacity){
+void createRootNode(ItemList it, int capacity){ // tao nut goc
 	totalValue = 0;
 	totalWeight = capacity;
 	upperBound = totalValue + it.data[0].density * capacity;
-	bestValue = FLT_MIN;
+	bestValue = FLT_MIN; // cho gia lon nhat tam thoi la so nho nhat kieu float
 }
 
-void updateBestValue(ItemList *it){
+void updateBestValue(ItemList *it){ //cap nhat gia lon nhat tam thoi va phuong an, khi tim duoc phuong an tot hon
 	if(bestValue < totalValue){
 		bestValue = totalValue;
-	}
-	
-	for(int i = 0; i < it->size; ++i){
-		it->data[i].solution = current[i];
+		for(int i = 0; i < it->size; ++i){
+			it->data[i].solution = current[i];
+		}
 	}
 }
 
-void BranchAndBound(ItemList *it, int numItems){
-	int maxItems = min((int) (totalWeight / it->data[numItems].weight), it->data[numItems].quantity);
+void BranchAndBound(ItemList *it, int numItems){ //numItems la thu tu cua do vat dang xet
+	int maxItems = min((int)(totalWeight / it->data[numItems].weight), it->data[numItems].quantity);
 	
 	for(int j = maxItems; j >= 0; --j){
 		totalValue += maxItems * it->data[numItems].value;
 		totalWeight -= maxItems * it->data[numItems].weight;
 		
-		if(numItems == it->size - 1){
+		if(numItems == it->size - 1){ // tranh truong hop goi den vi tri ngoai mang
 			upperBound = totalValue; 
 		}else{
 			upperBound = totalValue + totalWeight * it->data[numItems + 1].density;
 		}
 		
-		if(upperBound > bestValue){
+		if(upperBound > bestValue){ // cat tia truong hop can duoi <= gia lon nhat tam thoi
 			current[numItems] = j;
 			if(numItems == it->size - 1){
 				updateBestValue(it);
@@ -130,7 +129,7 @@ void BranchAndBound(ItemList *it, int numItems){
 			}
 		}
 		
-		current[numItems] = 0;
+		current[numItems] = 0; // quay lui de xet cac nhanh tiep theo
 		totalValue -= maxItems * it->data[numItems].value;
 		totalWeight += maxItems * it->data[numItems].weight;	
 	}

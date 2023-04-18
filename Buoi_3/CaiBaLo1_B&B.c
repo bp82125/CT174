@@ -99,10 +99,9 @@ void createRootNode(ItemList it, int capacity){
 void updateBestValue(ItemList *it){
 	if(bestValue < totalValue){
 		bestValue = totalValue;
-	}
-	
-	for(int i = 0; i < it->size; ++i){
-		it->data[i].solution = current[i];
+		for(int i = 0; i < it->size; ++i){
+			it->data[i].solution = current[i];
+		}
 	}
 }
 
