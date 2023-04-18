@@ -8,7 +8,7 @@
 typedef struct Item{
 	char name[20];
 	float weight, value, density;
-	int quantity, solution;
+	int solution;
 }Item;
 
 typedef struct ItemList{
@@ -17,7 +17,7 @@ typedef struct ItemList{
 }ItemList;
 
 void readFromFile(ItemList *it, float *capacity){
-	FILE *f = fopen("CaiBaLo2.txt", "r");
+	FILE *f = fopen("CaiBaLo3.txt", "r");
 	
 	fscanf(f, "%f", capacity);
 	
@@ -26,7 +26,7 @@ void readFromFile(ItemList *it, float *capacity){
 	int i = 0;
 	
 	while(!feof(f)){
-		fscanf(f, "%f%f%d", &it->data[i].weight, &it->data[i].value, &it->data[i].quantity);
+		fscanf(f, "%f%f", &it->data[i].weight, &it->data[i].value);
 		fgets(it->data[i].name, 20, f);
 		strtok(it->data[i].name, "\n");
 		
@@ -41,7 +41,7 @@ void readFromFile(ItemList *it, float *capacity){
 }
 
 void printList(ItemList it, float capacity){
-	printf("\nPhuong an Cai Ba lo 2 dung thuat toan NHANH CAN nhu sau:\n");
+	printf("\nPhuong an Cai Ba lo 3 dung thuat toan NHANH CAN nhu sau:\n");
 	printf("|---|--------------------|---------|---------|---------|----------|-----------|\n");
 	printf("|STT|     Ten Do Vat     | T Luong | Gia Tri | Don Gia | So luong | Phuong An |\n");
 	printf("|---|--------------------|---------|---------|---------|----------|-----------|\n");
@@ -52,7 +52,7 @@ void printList(ItemList it, float capacity){
 	for(int i = 0; i < it.size; ++i){
 		sumWeight += it.data[i].weight * it.data[i].solution;
 		sumValue += it.data[i].value * it.data[i].solution;
-		printf("|%2d |%-20s|%9.2f|%9.2f|%9.2f|%6d    |%6d     |\n", i+1, it.data[i].name ,it.data[i].weight, it.data[i].value, it.data[i].density, it.data[i].quantity, it.data[i].solution);
+		printf("|%2d |%-20s|%9.2f|%9.2f|%9.2f|%6d    |%6d     |\n", i+1, it.data[i].name ,it.data[i].weight, it.data[i].value, it.data[i].density, 1, it.data[i].solution);
 	}
 	printf("|---|--------------------|---------|---------|---------|----------|-----------|\n");
 	
@@ -62,7 +62,7 @@ void printList(ItemList it, float capacity){
 	}
 	
 	printf("%d)\n", it.data[it.size - 1].solution);
-	printf("Trong luong cua ba lo = %.2f\n", capacity);
+	printf("Trong luong cua ba lo = %.2f\n", capacity);	
 	printf("Tong gia tri = %.2f\n", sumValue);
 	printf("Tong trong luong = %.2f\n", sumWeight);
 }
@@ -109,7 +109,7 @@ void updateBestValue(ItemList *it){
 }
 
 void BranchAndBound(ItemList *it, int numItems){
-	int maxItems = min((int) (totalWeight / it->data[numItems].weight), it->data[numItems].quantity);
+	int maxItems = min((int) (totalWeight / it->data[numItems].weight), 1);
 	
 	for(int j = maxItems; j >= 0; --j){
 		totalValue += maxItems * it->data[numItems].value;
