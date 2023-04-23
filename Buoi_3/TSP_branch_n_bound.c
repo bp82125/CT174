@@ -73,7 +73,7 @@ float findLowerBound(Graph G, int numVertices){
 }
 
 //Kiem tra khi them mot dinh vao co tao chu trinh
-int checkCycle(Edge current[], int numVertices,int nextVertex){
+int checkCycle(int numVertices,int nextVertex){
 	int hasCycle = 0;
 	int i = 0;
 	//numVertices luu tru so dinh da duoc chon
@@ -88,7 +88,7 @@ int checkCycle(Edge current[], int numVertices,int nextVertex){
 }
 
 
-void updateSolution(Graph G, Edge current[],Edge solution[]){
+void updateSolution(Graph G){
 	current[G.n - 1] = G.A[current[G.n - 2].end][current[0].start]; //Canh cuoi co start la end cua canh truoc va end la start cua canh dau tien
 	totalValue += current[G.n - 1].length;
 	
@@ -104,7 +104,7 @@ void updateSolution(Graph G, Edge current[],Edge solution[]){
 
 void BranchAndBound(Graph G, int numVertices, int startVertex){
 	for(int j = 0; j < G.n; ++j){
-		if(startVertex != j && !G.A[startVertex][j].visited && !checkCycle(current, numVertices, j)){
+		if(startVertex != j && !G.A[startVertex][j].visited && !checkCycle(numVertices, j)){
 			totalValue += G.A[startVertex][j].length;
 			lowerBound = findLowerBound(G, numVertices + 1);
 			
@@ -114,7 +114,7 @@ void BranchAndBound(Graph G, int numVertices, int startVertex){
 				G.A[j][startVertex].visited = 1;
 				
 				if(numVertices == G.n - 2){ //Net da tat ca cac dinh
-					updateSolution(G, current, solution);
+					updateSolution(G);
 				}else{
 					BranchAndBound(G, numVertices + 1, j);
 				}
