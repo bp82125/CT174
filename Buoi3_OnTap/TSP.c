@@ -107,7 +107,7 @@ void updateSolution(Graph G){
 		}
 	}
 	
-	totalValue -= temp[G.n - 1].w;
+	totalValue -= temp[G.n - 1].w; //bat buoc phai tru ra de quay lui, ko se sai dap an
 }
 
 void BranchAndBound(Graph G, int numV, int startV){
